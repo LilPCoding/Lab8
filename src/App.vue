@@ -15,61 +15,58 @@
   <!-- <hr /> -->
   <div class="body">
     <h2>แปลงสกุลเงิน</h2>
-    <form @submit.prevent="convertCurrency">
-      <div>
-        <label for="amount">Amount :</label>
-        <input
-          class="form-control"
-          type="number"
-          id="amount"
-          v-model.number="amount"
+    <div class="card body shadow">
+      <form @submit.prevent="convertCurrency">
+        <div>
+          <label for="amount">Amount :</label>
+          <input
+            class="form-control"
+            type="number"
+            id="amount"
+            v-model.number="amount"
+            :disabled="rates < 1"
+          />
+        </div>
+        <div>
+          <label for="from">From :</label>
+          <select
+            id="from"
+            class="form-select"
+            v-model="fromCurrency"
+            :disabled="rates < 1"
+          >
+            <option v-for="currency in currencies" :key="currency">
+              {{ currency }}
+            </option>
+          </select>
+        </div>
+        <div>
+          <label for="to">To :</label>
+          <select
+            id="to"
+            class="form-select"
+            v-model="toCurrency"
+            :disabled="rates < 1"
+          >
+            <option v-for="currency in currencies" :key="currency">
+              {{ currency }}
+            </option>
+          </select>
+        </div>
+        <button
+          type="submit"
+          class="btn btn-primary"
           :disabled="rates < 1"
-        />
-      </div>
-      <div>
-        <label for="from">From :</label>
-        <select
-          id="from"
-          class="form-select"
-          v-model="fromCurrency"
-          :disabled="rates < 1"
+          style="margin: 10px 0px 10px 0px"
+          @click="alertDisplay"
         >
-          <option v-for="currency in currencies" :key="currency">
-            {{ currency }}
-          </option>
-        </select>
+          Convert
+        </button>
+      </form>
+      <div class="alert alert-success" role="alert" v-if="convertedAmount">
+        {{ amount }} {{ fromCurrency }} เท่ากับ {{ convertedAmount }}
+        {{ toCurrency }}
       </div>
-      <div>
-        <label for="to">To :</label>
-        <select
-          id="to"
-          class="form-select"
-          v-model="toCurrency"
-          :disabled="rates < 1"
-        >
-          <option v-for="currency in currencies" :key="currency">
-            {{ currency }}
-          </option>
-        </select>
-      </div>
-      <button
-        type="submit"
-        class="btn btn-primary"
-        :disabled="rates < 1"
-        style="margin-top: 10px"
-        @click="alertDisplay"
-      >
-        Convert
-      </button>
-    </form>
-    <div
-      class="alert alert-success"
-      role="alert"
-      v-if="convertedAmount"
-      style="margin-top: 10px"
-    >
-      {{ amount }} {{ fromCurrency }} เท่ากับ {{ convertedAmount }}
-      {{ toCurrency }}
     </div>
   </div>
 </template>
@@ -126,7 +123,6 @@ export default {
   justify-content: center;
   align-items: center;
   height: 100%;
-  
 }
 
 .header-bg {
